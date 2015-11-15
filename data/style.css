@@ -1,0 +1,157 @@
+body {
+	font-size: 14px;
+	font-family: "Bookman Old Style","Serifa BT","URW Bookman L","itc bookman",times,serif;
+	background: #00979d none repeat scroll 0px 0px;
+	align: Center;
+}
+#Main {
+	width: 460px;	
+	margin: 5px 3px 3px 12px;
+}
+
+	
+@import "compass/css3";
+
+text#titleGlitch {
+	fill: #006666;
+	font-weight: bold;
+	text-shadow: 2px 2px black;
+	font-family: sans-serif;
+	font-size: 48px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+text#titleText {
+	fill: #006666;
+	text-shadow: 1px 1px black;
+	font-family: sans-serif;
+	font-size: 26px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+svg {
+	border: solid 1px black;
+	width: 100%;
+	height: 80px;
+	display: block;
+	position: relative;
+	/*overflow: hidden; */ 
+	background: #66bebe;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+#ledControls {
+	margin-top:3px;
+	padding: 10px;
+	border: solid black 1px;
+	background: #66bebe;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.sectionTitle {
+	font-size: 28px;
+	font-weight: bold;
+	font-family: "impact","Bookman Old Style","Serifa BT","URW Bookman L","itc bookman",times,serif;
+	float: left;
+    clear: left;
+	color: #006666;
+	text-shadow: 2px 2px black;
+}
+.sectionDesc {
+	font-weight: bold;
+	float: left;
+    clear: left;
+}
+#ledBar {
+	float:none;
+	clear:left;
+    margin-left: 7px;
+	padding-top: 10px;
+	overflow: auto;
+}
+.ledDiv {
+	width: 40px;
+	height: 40px;
+	background: #add;
+	margin: 3px 3px;
+    float:left;
+	line-height: 30px;
+
+	border-radius: 100%;
+	position: relative;
+	-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+	box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+}
+.ledDiv label {
+	display: block;
+	width: 30px;
+	height: 30px;
+	border-radius: 100px;
+	text-align: center;
+
+	-webkit-transition: all .1s ease;
+	-moz-transition: all .1s ease;
+	-o-transition: all .1s ease;
+	-ms-transition: all .1s ease;
+	transition: all .1s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	z-index: 1;
+
+	background: #663300;
+
+	-webkit-box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);
+	-moz-box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);
+	box-shadow:inset 0px 1px 3px rgba(0,0,0,0.5);
+}
+.ledDiv input[type="checkbox"] {
+    visibility: hidden;
+}
+.ledDiv input[type=checkbox]:checked + label {
+	background: #ff9900;
+}
+.ledMacroButtons {
+	padding: 18px 5px 15px 5px;
+	text-decoration: none;
+	float:none;
+	clear:left;
+}
+.ledMacroButton {
+  height: 50px;
+  background: #00989d;
+  background-image: -webkit-linear-gradient(top, #00989d, #0a787a);
+  background-image: -moz-linear-gradient(top, #00989d, #0a787a);
+  background-image: -ms-linear-gradient(top, #00989d, #0a787a);
+  background-image: -o-linear-gradient(top, #00989d, #0a787a);
+  background-image: linear-gradient(to bottom, #00989d, #0a787a);
+  -webkit-border-radius: 17;
+  -moz-border-radius: 17;
+  border-radius: 17px;
+  text-shadow: 6px 4px 4px #4d424d;
+  -webkit-box-shadow: 0px 1px 3px #666666;
+  -moz-box-shadow: 0px 1px 3px #666666;
+  box-shadow: 0px 1px 3px #666666;
+  color: #fafafa;
+  font-size:12px;
+  padding: 10px 15px 10px 15px;
+  border: solid #26b3b3 4px;
+  text-decoration: none;
+  margin: 23px 4px 23px 6px;
+	position: relative;
+}
+
+.ledMacroButton:hover {
+  background: #307070;
+  background-image: -webkit-linear-gradient(top, #307070, #66bebe);
+  background-image: -moz-linear-gradient(top, #307070, #66bebe);
+  background-image: -ms-linear-gradient(top, #307070, #66bebe);
+  background-image: -o-linear-gradient(top, #307070, #66bebe);
+  background-image: linear-gradient(to bottom, #307070, #66bebe);
+  text-decoration: underline;
+}
+

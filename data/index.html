@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>Esp8266 - FsWebserver</title>  
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="text/javascript">
+	
+	//var ledGpNames = [5, 4, 13, 12, 14, 16]; // 4 & 5 flipped on my board dirty hack here
+	
+    function updateLeds(initial, cb) 
+    {		
+		var nocache = "&nocache=" + Math.random() *10001;
+		//var uri = "json.json";	
+        var uri = "leds";
+        
+		if(!initial) {
+			uri += "?LED=" + cb.value + "&state=" + (Number(cb.checked)) + nocache;	
+		}
+		else
+		{
+			uri += "?" + nocache;
+		}
+        console.log(uri);
+		var xh = new XMLHttpRequest();
+		xh.onreadystatechange = function(){
+			if (xh.readyState == 4){
+				if(xh.status == 200) {
+					if (this.responseText != null) {
+						var res = JSON.parse(xh.responseText);
+                        var ledDiv;
+                        if(initial)
+                        {
+                            var ledInput;
+                            var ledLabel;        
+                            var ledBarDiv = document.getElementById("ledBar");
+                            var clearAllMacroBtn = document.createElement("a");
+                            clearAllMacroBtn.setAttribute("class", "ledMacroButton");
+                            clearAllMacroBtn.setAttribute("href", "javascript:handleLedMarco(\"clearAll\")");
+                            clearAllMacroBtn.innerHTML = "Clear All Leds";
+                        }
+                            
+                        for (var i = 0; i < res.leds.length; i++) {                         
+                            var ledPin = res.leds[i][i][0];
+                            var ledState = res.leds[i][i][1];
+                            var ledName = "LED" + ledPin;
+                            if(initial)
+                            {
+                                ledDiv = "";        
+                                ledInput = "";
+                                ledLabel = "";
+                                ledDiv = document.createElement("div");
+                                ledDiv.setAttribute("class", "ledDiv");
+                                ledBarDiv.appendChild(ledDiv);
+                                ledInput = document.createElement("input");
+                                ledInput.type = "checkbox";
+                                ledInput.value = (Number(ledPin)); 
+                                ledInput.setAttribute("id", ledName);  
+                                ledInput.setAttribute("name", ledName);            
+                                ledInput.setAttribute("onClick", "updateLeds(false, this)");
+                                ledDiv.appendChild(ledInput);            
+                                ledLabel = document.createElement("label");
+                                ledLabel.setAttribute("for", ledName);  
+                                ledLabel.innerHTML = ledPin; 
+                                ledDiv.appendChild(ledLabel);
+                            }
+							var ledElement = document.getElementsByName(ledName)[0];
+							if(res.leds[i][i][1] === "1")
+							{
+								ledElement.checked = true;
+							}
+							else
+							{
+								ledElement.checked = false;
+							}
+                        }
+                        
+                        if(initial)
+                        {
+                            ledBarDiv.appendChild(clearAllMacroBtn);
+                        }
+						
+                        for (var i = 0; i < res.leds.length; i++) {  
+							
+						}
+						
+					}
+				}
+			}
+		};        
+		xh.overrideMimeType("text/json");
+		//console.log(uri);
+		xh.open("GET", uri, true);
+		xh.send(null);
+    };
+    
+    function clearAll() {
+		
+    };
+    
+    function run(){
+      if(!running){
+        running = true;
+        updateLeds()();
+      }
+    }
+	function dec2bin(dec){
+		dec = parseInt(dec, 10)
+		return (dec >>> 0).toString(2);
+	}
+    
+    function fillLedBar() {
+        
+		updateLeds();
+    }
+    function handleLedMarco(arg) 
+    {
+        arg = "/" + arg; 
+		console.log("uri: " + arg );		
+		var xh = new XMLHttpRequest();        
+		xh.onreadystatechange = function(){
+			if (xh.readyState == 4){
+				if(xh.status == 200) {
+					if (this.responseText != null) {
+						var res = JSON.parse(xh.responseText);
+						for (var i = 0; i < res.leds.length; i++) {  
+							var ledName = "LED" + i;
+							var ledElement = document.getElementsByName(ledName)[0];
+							if(res.leds[i] === "1")
+							{
+								ledElement.checked = true;
+							}
+							else
+							{
+								ledElement.checked = false;
+							}
+						}
+						
+					}
+				}
+			}
+		};	
+		xh.overrideMimeType("text/json");
+		//console.log(uri);
+		xh.open("GET", arg, true);
+		xh.send(null);
+	}
+    function onBodyLoad(){
+		// init LEDbar
+		updateLeds(true);
+		// run the loop per default
+		//run();
+    }
+  </script>
+
+</head>
+<body id="index" style="margin:0; padding:0;" onload="onBodyLoad()">
+	<div id="Main"> 
+		<div id="pageTitle">	
+			<!-- SVG Glitch from: http://codepen.io/DirkWeber/pen/ArFvk -->
+			<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="460px" height="85px" viewBox="0 0 460 85">
+				<defs>
+					<filter id="filter">
+						<feFlood flood-color="#66bebe" result="black" />
+						<feFlood flood-color="#206060" result="flood1" />
+						<feFlood flood-color="#369e9e" result="flood2" />
+						<feOffset in="SourceGraphic" dx="3" dy="0" result="off1a"/>
+						<feOffset in="SourceGraphic" dx="2" dy="0" result="off1b"/>
+						<feOffset in="SourceGraphic" dx="-4" dy="0" result="off2a"/>
+						<feOffset in="SourceGraphic" dx="-2" dy="0" result="off2b"/>
+						<feComposite in="flood1" in2="off1a" operator="in"  result="comp1" />
+						<feComposite in="flood2" in2="off2a" operator="in" result="comp2" />
+
+						<feMerge x="0" width="100%" result="merge1">
+							<feMergeNode in = "black" />
+							<feMergeNode in = "comp1" />
+							<feMergeNode in = "off1b" />
+
+							<animate 
+								attributeName="y" 
+								id = "y"
+								dur ="4s"
+								
+								values = '104px; 104px; 30px; 105px; 30px; 2px; 2px; 50px; 40px; 105px; 105px; 20px; 6ßpx; 40px; 104px; 40px; 70px; 10px; 30px; 104px; 102px'
+
+								keyTimes = '0; 0.362; 0.368; 0.421; 0.440; 0.477; 0.518; 0.564; 0.593; 0.613; 0.644; 0.693; 0.721; 0.736; 0.772; 0.818; 0.844; 0.894; 0.925; 0.939; 1'
+
+								repeatCount = "indefinite" />
+			 
+							<animate attributeName="height" 
+								id = "h" 
+								dur ="4s"
+								
+								values = '10px; 0px; 10px; 30px; 50px; 0px; 10px; 0px; 0px; 0px; 10px; 50px; 40px; 0px; 0px; 0px; 40px; 30px; 10px; 0px; 50px'
+
+								keyTimes = '0; 0.362; 0.368; 0.421; 0.440; 0.477; 0.518; 0.564; 0.593; 0.613; 0.644; 0.693; 0.721; 0.736; 0.772; 0.818; 0.844; 0.894; 0.925; 0.939; 1'
+
+								repeatCount = "indefinite" />
+						</feMerge>
+						
+
+						<feMerge x="0" width="100%" y="60px" height="65px" result="merge2">
+							<feMergeNode in = "black" />
+							<feMergeNode in = "comp2" />
+							<feMergeNode in = "off2b" />
+
+							<animate attributeName="y" 
+								id = "y"
+								dur ="4s"
+								values = '103px; 104px; 69px; 53px; 42px; 104px; 78px; 89px; 96px; 100px; 67px; 50px; 96px; 66px; 88px; 42px; 13px; 100px; 100px; 104px;' 
+
+								keyTimes = '0; 0.055; 0.100; 0.125; 0.159; 0.182; 0.202; 0.236; 0.268; 0.326; 0.357; 0.400; 0.408; 0.461; 0.493; 0.513; 0.548; 0.577; 0.613; 1'
+
+								repeatCount = "indefinite" />
+			 
+							<animate attributeName="height" 
+								id = "h"
+								dur = "4s"
+								
+								values = '0px; 0px; 0px; 16px; 16px; 12px; 12px; 0px; 0px; 5px; 10px; 22px; 33px; 11px; 0px; 0px; 10px'
+
+								keyTimes = '0; 0.055; 0.100; 0.125; 0.159; 0.182; 0.202; 0.236; 0.268; 0.326; 0.357; 0.400; 0.408; 0.461; 0.493; 0.513;  1'
+								 
+								repeatCount = "indefinite" />
+						</feMerge>
+						
+						<feMerge>
+							<feMergeNode in="SourceGraphic" />	
+
+							<feMergeNode in="merge1" /> 
+						<feMergeNode in="merge2" />
+
+						</feMerge>
+					</filter>
+				</defs>
+				<g>
+					<text id="titleGlitch" style="filter: url(#filter);" x="0" y="45">ESP8266-Arduino</text>
+					<text id="titleText" x="10" y="75">AP Server Portal</text>
+				</g>
+			</svg>
+		</div>	
+	
+		<div id="ledControls">
+			<text class="sectionTitle">LED Controls:</text>
+			<text class="sectionDesc">Click on the LEDs to light em Up! </text>
+            <div id="ledBar"></div>
+        
+            <text class="sectionDesc">also try a Animation:</text>
+            <div class="ledMacroButtons">
+                <a class="ledMacroButton" href="javascript:handleLedMarco('rider')">Rider</a>
+                <a class="ledMacroButton" href="javascript:handleLedMarco('flipper')">Flipper</a>
+                <a class="ledMacroButton" href="javascript:handleLedMarco('clearAll')">stop & ClearAll</a>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
